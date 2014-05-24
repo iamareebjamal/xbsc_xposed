@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="Style.X" parent="android:Theme.Holo">
+		<item name="android:editTextStyle">@style/EditText</item>
+		<item name="android:windowActionBar">false</item>
+		<item name="android:windowNoTitle">true</item>
+	</style>
+	
+	
+
+    <style name="EditText">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">17.0sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/edit_text</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+</resources>
