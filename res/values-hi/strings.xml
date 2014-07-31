@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">नमस्ते दुनिया! प्रथम कार्य</string>
+    <string name="app_name">X-Battery Stats Color</string>
+    <string name="app_short">XBSC</string>
+    <string name="module_description">एक ऐसा xposed मौडूल जो आपके बैटरी ग्राफ का रंग बदल देगा</string>
+    <string name="btn_enable">चालू करें</string>
+    <string name="btn_disable">बंद करें</string>
+    <string name="btn_apply">लगाएं</string>
+    <string name="edt_hint">रंग</string>
+    <string name="toast_success">रंग सफलतापूर्वक बदल गया</string>
+    <string name="toast_invalid">यह एक मान्य रंग नहीं है</string>
+    <string name="toast_noactivity">आवश्यक एप्लीकेशन नहीं मिली!</string>
+    <string name="intro_text">बैटरी ग्राफ का रंग:</string>
+    <string name="new_graph">नया ग्राफ</string>
+    <string name="old_graph">तत्काल ग्राफ</string>
+    <string name="transparency">पारदर्शिता</string>
+    <string name="battery">बैटरी</string>
+    <string name="normal">सामान्य</string>
+    <string name="module_control">मौडूल कंट्रोल</string>
+    <string name="battery_intro">अलग अलग बैटरी स्तर के लिए रंग चुनें:</string>
+    <string name="perc_100">100%-60%</string>
+    <string name="perc_60">59%-30%</string>
+    <string name="perc_30">29%-15%</string>
+    <string name="perc_15">14%-0%</string>
+    <string name="diag_title">कोई रंग चुनें:</string>
+    <string name="battery_mode">तत्काल चुनाव : बैटरी</string>
+    <string name="normal_mode">तत्काल चुनाव : सामान्य</string>
+    <string name="menu_more">और</string>
+    <string name="menu_disable_module">मौडूल बंद करें</string>
+    <string name="menu_enable_module">मौडूल चालू करें</string>
+    <string name="menu_disable_logs">लौग बंद करें</string>
+    <string name="menu_enable_logs">लौग चालू करें</string>
+    <string name="menu_about">और जानें</string>
+    <string name="menu_graph">ग्राफ</string>
+    <string name="about_module">मौडूल के बारे में</string>
+    <string name="about_module_text">X-Battery Stats Colors (XBSC, in short) is a Module that allows you to change the color of Battery Graph in Settings application. You can either choose Normal mode and apply whatever color you want to the Battery Graph, or you can choose Battery Mode and let the module change the graph according to the battery level, while your chosen transparency retains. You can also choose the colors for different battery levels.</string>
+    <string name="developed_by">इन्होने बनाया</string>
+    <string name="iamareebjamal">iamareebjamal</string>
+    <string name="source">स्रोत</string>
+    <string name="github">GitHub</string>
+    <string name="contact">यहाँ संपर्क करें:</string>
+    <string name="facebook">फेसबुक</string>
+    <string name="xda">एक्स.डी.ए</string>
+    <string name="gplus">गूगल +</string>
+    <string name="twitter">ट्विटर</string>
+
+</resources>

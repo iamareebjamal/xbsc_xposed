@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:padding="0dp" >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/topLayout"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
@@ -14,6 +14,7 @@
         android:orientation="horizontal" >
 
         <ImageView
+            android:id="@+id/imageView1"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
@@ -22,14 +23,30 @@
             android:src="@drawable/ac_ic" />
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/imageView1"
             android:gravity="center_vertical"
             android:padding="0.0dip"
-            android:text="@string/app_name"
+            android:text="@string/app_short"
             android:textColor="@android:color/white"
             android:textSize="18.0sp" />
-    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:onClick="hideandview"
+            android:contentDescription="@string/app_name"
+            android:background="@drawable/selector_transparent"
+            android:src="@drawable/ic_settings" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -40,27 +57,65 @@
         android:padding="5dp" >
 
         <LinearLayout
+            android:id="@+id/hiddenLayout"
+            android:visibility="gone"
+            android:background="#33ffffff"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp" >
+            android:gravity="center"
+            android:orientation="vertical" >
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="@string/module_control" />
+                android:gravity="center"
+                android:orientation="horizontal" >
 
-            <Button
-                android:id="@+id/disableButton"
-                android:layout_width="0dp"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textSize="18sp"
+                    android:text="@string/module_control" />
+
+                <ImageView
+                    android:id="@+id/disableButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/selector_transparent"
+                    android:onClick="disable"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_select_all" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="disable"
-                android:layout_marginLeft="30dp"
-                android:paddingRight="5dp"
-                android:text="@string/btn_disable" />
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textSize="18sp"
+                    android:text="Logging" />
+
+                <ImageView
+                    android:id="@+id/logButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/selector_transparent"
+                    android:onClick="log"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_deselect_all" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -75,9 +130,9 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:onClick="enableNormal"
                 android:background="@drawable/tab_btn"
                 android:gravity="center"
+                android:onClick="enableNormal"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -85,8 +140,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:textColor="#ffffff"
-                    android:text="@string/normal" />
+                    android:text="@string/normal"
+                    android:textColor="#ffffff" />
             </LinearLayout>
 
             <LinearLayout
@@ -103,10 +158,36 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:textColor="#ffffff"         
-                    android:text="@string/battery" />
+                    android:text="@string/battery"
+                    android:textColor="#ffffff" />
             </LinearLayout>
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/modeLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff33b5e5"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical"
+            android:padding="5dp" >
+
+            <TextView
+                android:id="@+id/modeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current Mode : Normal"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+        
+        <ScrollView
+        android:id="@+id/scrollView"
+        android:clipToPadding="false"
+    	android:fitsSystemWindows="true"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
         <LinearLayout
             android:id="@+id/normalLayout"
@@ -144,9 +225,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="5dp"
-                    android:src="@drawable/color"
                     android:contentDescription="@string/hello"
-                    android:onClick="colorpicker" />
+                    android:onClick="colorpicker"
+                    android:src="@drawable/color" />
 
                 <ImageView
                     android:id="@+id/previewButton"
@@ -155,8 +236,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="5dp"
                     android:contentDescription="@string/hello"
-                    android:src="@drawable/done"
-                    android:onClick="preview" />
+                    android:onClick="preview"
+                    android:src="@drawable/done" />
             </LinearLayout>
 
             <LinearLayout
@@ -179,7 +260,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:max="255" />
+                    android:max="255"
+                    android:progressDrawable="@drawable/scrubber_progress_horizontal_holo_dark"
+                    android:thumb="@drawable/scrubber_control_selector_holo" />
             </LinearLayout>
 
             <LinearLayout
@@ -270,7 +353,15 @@
                 android:layout_marginTop="10dp"
                 android:onClick="btn"
                 android:text="@string/btn_apply" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="second"
+                android:text="@string/btn_apply" />
         </LinearLayout>
+        
+        </ScrollView>
 
         <!--
         TextView
@@ -280,6 +371,12 @@
 		android:padding="10dp"
 		android:text="Graph Preview" /
         -->
+        
+        <ScrollView
+        android:clipToPadding="false"
+    	android:fitsSystemWindows="true"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
         <RelativeLayout
             android:id="@+id/batteryLayout"
@@ -398,111 +495,39 @@
                         android:text="@string/perc_15" />
                 </LinearLayout>
             </LinearLayout>
-            
-            
-                    <LinearLayout
-                        android:id="@+id/buttonLayout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-               			android:layout_marginTop="20dp"
-                		android:layout_below="@+id/linearLayoutx"
-                		android:layout_centerHorizontal="true"
-                        android:orientation="horizontal" >
 
-            <Button
-                android:id="@+id/buttonApply"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/buttonLayout"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="batteryApply"
-                android:text="@string/btn_apply" />
-            
-            <ImageView
-                android:id="@+id/buttonUndo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/undo"
-                android:contentDescription="@string/hello"
-                android:onClick="undo" />
-            
-            
-            
-            
+                android:layout_below="@+id/linearLayoutx"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/buttonApply"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="batteryApply"
+                    android:text="@string/btn_apply" />
+
+                <ImageView
+                    android:id="@+id/buttonUndo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/hello"
+                    android:onClick="undo"
+                    android:src="@drawable/undo" />
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/editText100"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_below="@+id/buttonLayout"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="45dp"
-                android:hint="@string/hello"
-                android:ems="10" />
 
-            <EditText
-                android:id="@+id/editText60"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_below="@+id/buttonLayout"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:hint="@string/hello"
-                android:ems="10" />
-
-            <EditText
-                android:id="@+id/editText30"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_below="@+id/buttonLayout"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:hint="@string/hello"
-                android:ems="10" />
-
-            <EditText
-                android:id="@+id/editText15"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_below="@+id/buttonLayout"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:hint="@string/hello"
-                android:ems="10" />
         </RelativeLayout>
+        
+        </ScrollView>
     </LinearLayout>
 
-    <!--
-    RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/linearLayout1"
-        android:layout_centerHorizontal="true"
-        android:background="#99ff0000"
-        android:gravity="center_vertical" >
-        
-        <Button
-            android:id="@+id/logButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:onClick="log"
-            android:text="@string/btn_log_off" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/logButton"
-            android:layout_alignParentLeft="true"
-            android:padding="10dp"
-            android:
-            android:text="Logs" />
-        
-    </RelativeLayout
-    -->
 
 </RelativeLayout>

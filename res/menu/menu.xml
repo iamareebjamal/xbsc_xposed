@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  	<item android:icon="@drawable/ic_graph" android:id="@+id/graph" android:title="@string/menu_graph" android:showAsAction="always" />
+    <item android:icon="@drawable/ic_overflow" android:id="@+id/more" android:title="@string/menu_more" android:showAsAction="always">
+        <menu>
+            <item android:id="@+id/toggleModule" android:icon="@drawable/ic_deselect_all" android:title="@string/menu_disable_module" android:showAsAction="never" android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider" />
+            <item android:id="@+id/toggleLogs" android:icon="@drawable/ic_logs" android:title="@string/menu_enable_logs" android:showAsAction="never" android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider" />
+            <item android:id="@+id/aboutButton" android:icon="@drawable/ic_about" android:title="@string/menu_about" android:showAsAction="never" android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider" />
+        </menu>
+    </item>
+</menu>

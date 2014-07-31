@@ -1,7 +1,18 @@
-Xposed Battery Stats Colors
-===========================
+sherlock_tabs_sample
+====================
 
-XBSC is an Xposed Module that allows you to change color of your Android Battery History Chart
+This is a highly commented ActionBarSherlock Tabs Sample project
 
 
-No complaints about dirty code :p
+1. Import in Eclipse
+2. Add actionbarsherlock as library
+3. Build
+
+
+
+Read the comments for understanding of code
+
+Credits: 
+
+1. actionbarsherlock
+2. stackoverflow

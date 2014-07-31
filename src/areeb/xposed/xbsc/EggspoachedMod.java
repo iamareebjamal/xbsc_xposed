@@ -26,7 +26,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.BatteryManager;
@@ -37,6 +36,7 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
+@SuppressLint("DefaultLocale")
 public class EggspoachedMod implements IXposedHookLoadPackage {
 
 	Bundle mBundle;
@@ -52,6 +52,9 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 	Paint mWakeLockPaint;
 	Paint mWifiRunningPaint;
 	Paint mGpsOnPaint;
+	
+	int mLeftColor;
+	int mMiddleColor;
 
 	Object mPhoneSignalChart;
 
@@ -68,7 +71,6 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 	private static final String L_COMPLETE = "Completed";
 	private static final String L_HOOKED = "Hooked ";
 	private static final String L_SEC_HOOK = " on Second Hook";
-	private static final String L_SEC_BATTERY = " according to Battery";
 	private static final String PREF_PACKAGE = "areeb.xposed.xbsc";
 	private static final String PREF_NAME = "color_preference";
 	private static final String PREF_COLOR = "color";
@@ -76,25 +78,25 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 	private static final String PREF_ENABLED = "enabled";
 	private static final String PREF_BATTERY = "battery";
 	private static final String PREF_NORMAL = "normal";
-	private static final String PREF_BATTERY_STATS = "battery_stats";
+	private static final String PREF_LOGGING = "logs";
+	private static final String DEF_COLOR = "22cc88";
+	private static final String DEF_TRANS = "39";
+	private static final String DEF_ERR_BAR = "#bbf7494b";
+	private static final String HOOKED_PACKAGE = "com.android.settings";
+	private static final String HOOK_CLASS1 = "com.android.settings.fuelgauge.BatteryHistoryChart";
+	private static final String HOOK_CLASS_GRAPH = "com.android.settings.fuelgauge.BatteryHistoryDetail";
+	private static final String HOOK_METHOD1 = "onSizeChanged";
+	private static final String HOOK_METHOD2 = "onCreate";
+	
+	
 	private static final String PREF_BATTERY_GOOD = "battery_good";
 	private static final String PREF_BATTERY_OK = "battery_ok";
 	private static final String PREF_BATTERY_WARN = "battery_warn";
 	private static final String PREF_BATTERY_CRITICAL = "battery_critical";
-	private static final String PREF_LOGGING = "logs";
-	private static final String DEF_COLOR = "22cc22";
-	private static final String DEF_TRANS = "99";
-	private static final String DEF_ERR_BAR = "#bbf7494b";
 	private static final String BATTERY_GOOD = "33cc66";
 	private static final String BATTERY_OK = "ffc32a";
 	private static final String BATTERY_WARN = "ff6a09";
 	private static final String BATTERY_CRITICAL = "ff4b4e";
-	private static final String HOOKED_PACKAGE = "com.android.settings";
-	private static final String HOOK_CLASS1 = "com.android.settings.fuelgauge.BatteryHistoryChart";
-	private static final String HOOK_CLASS2 = "com.android.settings.fuelgauge.PowerUsageSummary";
-	private static final String HOOK_CLASS_GRAPH = "com.android.settings.fuelgauge.BatteryHistoryDetail";
-	private static final String HOOK_METHOD1 = "onSizeChanged";
-	private static final String HOOK_METHOD2 = "onCreate";
 
 	BroadcastReceiver receiver = new BroadcastReceiver() {
 		@Override
@@ -147,6 +149,9 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 				// Phone Signal Chart
 				mPhoneSignalChart = getObjectField(param.thisObject,
 						"mPhoneSignalChart");
+				
+				Context mContext = (Context) callMethod(
+						param.thisObject, "getContext");;
 
 				XSharedPreferences prefI = new XSharedPreferences(PREF_PACKAGE,
 						PREF_NAME);
@@ -163,8 +168,7 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 
 				if (normal == true) {
 					String color = prefI.getString(PREF_COLOR, DEF_COLOR);
-					String transparency = prefI
-							.getString(PREF_TRANS, DEF_TRANS);
+					String transparency = prefI.getString(PREF_TRANS, DEF_TRANS);
 
 					colorGraph(color, transparency);
 
@@ -172,16 +176,12 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 
 				if (battery == true) {
 
-					XSharedPreferences prefStat = new XSharedPreferences(
-							HOOKED_PACKAGE, PREF_BATTERY_STATS);
+					String color = getBatteryColor(mContext, prefI);
 
-					prefStat.reload();
-
-					String color = prefStat.getString(PREF_COLOR, DEF_COLOR);
-					String transparency = prefI
-							.getString(PREF_TRANS, DEF_TRANS);
+					String transparency = prefI.getString(PREF_TRANS, DEF_TRANS);
 
 					colorGraph(color, transparency);
+
 
 				}
 
@@ -199,23 +199,21 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 						logIt(L_HOOKED + HOOK_METHOD1);
 
 						// ScreenOn Paint
-						mScreenOnPaint = (Paint) getObjectField(
-								param.thisObject, "mScreenOnPaint");
+						mScreenOnPaint = (Paint) getObjectField(param.thisObject, "mScreenOnPaint");
 
 						// Wakelock Paint
-						mWakeLockPaint = (Paint) getObjectField(
-								param.thisObject, "mWakeLockPaint");
+						mWakeLockPaint = (Paint) getObjectField(param.thisObject, "mWakeLockPaint");
 
 						// Wifi Running Paint
-						mWifiRunningPaint = (Paint) getObjectField(
-								param.thisObject, "mWifiRunningPaint");
+						mWifiRunningPaint = (Paint) getObjectField(param.thisObject, "mWifiRunningPaint");
 
 						// GPS ON Paint
-						mGpsOnPaint = (Paint) getObjectField(param.thisObject,
-								"mGpsOnPaint");
+						mGpsOnPaint = (Paint) getObjectField(param.thisObject, "mGpsOnPaint");
+						
+						Context mContext = (Context) callMethod(param.thisObject, "getContext");
+						
 
-						XSharedPreferences prefI = new XSharedPreferences(
-								PREF_PACKAGE, PREF_NAME);
+						XSharedPreferences prefI = new XSharedPreferences(PREF_PACKAGE, PREF_NAME);
 
 						prefI.reload();
 
@@ -228,21 +226,15 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 
 						if (normal == true) {
 
-							String color = prefI.getString(PREF_COLOR,
-									DEF_COLOR);
+							String color = prefI.getString(PREF_COLOR, DEF_COLOR);
 
 							colorBar(color);
 
 						}
 
 						if (battery == true) {
-							XSharedPreferences prefStat = new XSharedPreferences(
-									HOOKED_PACKAGE, PREF_BATTERY_STATS);
-
-							prefStat.reload();
-
-							String color = prefStat.getString(PREF_COLOR,
-									DEF_COLOR);
+							
+							String color = getBatteryColor(mContext, prefI);
 
 							colorBar(color);
 
@@ -252,83 +244,10 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 
 					}
 				});
+		
+		
+		
 
-		final Class<?> activityClass = findClass(HOOK_CLASS2,
-				lpparam.classLoader);
-		findAndHookMethod(activityClass, HOOK_METHOD2, Bundle.class,
-				new XC_MethodHook() {
-					@SuppressLint("WorldReadableFiles")
-					@Override
-					protected void afterHookedMethod(MethodHookParam param)
-							throws Throwable {
-
-						Context cont = (Context) callMethod(param.thisObject,
-								"getApplicationContext");
-
-						String currValue = String.format("%.0f",
-								getBatteryLevel(cont));
-
-						int i = Integer.valueOf(currValue);
-
-						@SuppressWarnings("unused")
-						Activity acti = (Activity) param.thisObject;
-
-						// acti.getWindow().getDecorView().setBackgroundColor(Color.BLACK);
-
-						XSharedPreferences prefI = new XSharedPreferences(
-								PREF_PACKAGE, PREF_NAME);
-						prefI.reload();
-						String batteryGood = prefI.getString(PREF_BATTERY_GOOD,
-								BATTERY_GOOD);
-						String batteryOk = prefI.getString(PREF_BATTERY_OK,
-								BATTERY_OK);
-						String batteryWarn = prefI.getString(PREF_BATTERY_WARN,
-								BATTERY_WARN);
-						String batteryCritical = prefI.getString(
-								PREF_BATTERY_CRITICAL, BATTERY_CRITICAL);
-
-						mActivity = (Activity) param.thisObject;
-
-						Context mContext = (Context) callMethod(
-								param.thisObject, "getApplicationContext");
-
-						ClassLoader mCl = (ClassLoader) callMethod(
-								param.thisObject, "getClassLoader");
-
-						mBundle = new Bundle(mCl);
-
-						IntentFilter mFilter = new IntentFilter(INTENT_NAME);
-
-						callMethod(mContext, BITCH_SPELLING_MISTAKE, receiver,
-								mFilter);
-
-						@SuppressWarnings("deprecation")
-						SharedPreferences pref = cont
-								.getSharedPreferences(PREF_BATTERY_STATS,
-										Context.MODE_WORLD_READABLE);
-						SharedPreferences.Editor edit = pref.edit();
-						edit.putString(PREF_COLOR, batteryGood);
-
-						if (30 < i && i <= 60) {
-
-							edit.putString(PREF_COLOR, batteryOk);
-
-						} else if (15 < i && i <= 30) {
-
-							edit.putString(PREF_COLOR, batteryWarn);
-
-						} else if (0 < i && i <= 15) {
-
-							edit.putString(PREF_COLOR, batteryCritical);
-
-						}
-
-						edit.apply();
-
-						logIt(L_COL_CHANGED + L_SEC_BATTERY);
-
-					}
-				});
 
 		final Class<?> batteryActivityClass = findClass(HOOK_CLASS_GRAPH,
 				lpparam.classLoader);
@@ -356,22 +275,12 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 
 					}
 				});
+		
+
 
 	}
 
-	public float getBatteryLevel(Context cont) {
-		Intent batteryIntent = cont.registerReceiver(null, new IntentFilter(
-				Intent.ACTION_BATTERY_CHANGED));
-
-		int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-		int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-
-		if (level == -1 || scale == -1) {
-			return 50.0f;
-		}
-
-		return ((float) level / (float) scale) * 100.0f;
-	}
+	
 
 	public void logIt(String string) {
 
@@ -426,6 +335,54 @@ public class EggspoachedMod implements IXposedHookLoadPackage {
 
 		logIt(L_COL_CHANGED + L_SEC_HOOK);
 
+	}
+	
+	@SuppressLint("DefaultLocale")
+	public String getBatteryColor(Context context, XSharedPreferences prefI){
+		
+		String currValue = String.format("%.0f", getBatteryLevel(context));
+
+		int i = Integer.valueOf(currValue);
+		
+		String batteryGood = prefI.getString(PREF_BATTERY_GOOD, BATTERY_GOOD);
+		String batteryOk = prefI.getString(PREF_BATTERY_OK, BATTERY_OK);
+		String batteryWarn = prefI.getString(PREF_BATTERY_WARN, BATTERY_WARN);
+		String batteryCritical = prefI.getString(PREF_BATTERY_CRITICAL, BATTERY_CRITICAL);
+
+		String color = batteryGood;
+		
+		
+
+		if (30 < i && i <= 60) {
+
+			color = batteryOk;
+
+		} else if (15 < i && i <= 30) {
+
+			color = batteryWarn;
+
+		} else if (0 < i && i <= 15) {
+
+			color = batteryCritical;
+
+		}
+		
+		
+		return color;
+	}
+	
+	public float getBatteryLevel(Context cont) {
+		Intent batteryIntent = cont.registerReceiver(null, new IntentFilter(
+				Intent.ACTION_BATTERY_CHANGED));
+
+		int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+		int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+		if (level == -1 || scale == -1) {
+			return 50.0f;
+		}
+
+		return ((float) level / (float) scale) * 100.0f;
 	}
 
 }

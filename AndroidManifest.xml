@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="areeb.xposed.xbsc"
-    android:versionCode="3"
-    android:versionName="1.0"
-	android:installLocation="auto" >
+    android:versionCode="5"
+    android:versionName="1.2" >
 
-    <uses-sdk 
-        android:minSdkVersion="10" 
-        android:targetSdkVersion="18" />
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="19" />
 
     <application
-        android:icon="@drawable/ic_launcher"
         android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-		android:theme="@style/Style.X">
-		
-        <meta-data android:value="true" android:name="xposedmodule"/>
-        <meta-data android:value="2.1*" android:name="xposedminversion"/>
-        <meta-data android:value="@string/module_description" android:name="xposeddescription" />
-   
-		   <activity
-            android:label="@string/app_name"
-            android:name=".KolurChuser" >
-            <intent-filter >
+        android:theme="@style/Theme.Sherlock" >
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="2.1*" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="@string/module_description" />
+        <meta-data
+            android:name="override_tinted_status_bar_defaults"
+            android:value="true" />
+
+        
+        <activity
+            android:name="areeb.xposed.xbsc.KolurChuser"
+            android:label="@string/app_short" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-	</application>
+    </application>
+
 </manifest>
